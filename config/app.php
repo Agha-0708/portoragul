@@ -56,6 +56,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Asset URL
+    |--------------------------------------------------------------------------
+    |
+    | This URL is used by the framework when generating URLs to assets such
+    | as CSS and JavaScript files. This is useful when assets are hosted
+    | on a CDN or when you need to force HTTPS for all asset URLs.
+    |
+    */
+
+    'asset_url' => env('ASSET_URL', null),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |
