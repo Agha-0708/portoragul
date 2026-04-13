@@ -37,9 +37,38 @@
         .tech-scroll-wrapper:hover {
             animation-play-state: paused;
         }
+    
+        /* --- CSS SCREENSAVER --- */
+/* Animasi Zzz Melayang */
+@keyframes float-z {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-20px) translateX(10px); opacity: 0; }
+}
+.zzz {
+    animation: float-z 2s infinite;
+    opacity: 0;
+}
+/* Delay biar munculnya gantian: z.. Z.. Z.. */
+.zzz:nth-child(1) { animation-delay: 0s; }
+.zzz:nth-child(2) { animation-delay: 0.5s; }
+.zzz:nth-child(3) { animation-delay: 1s; }
     </style>
 </head>
 <body class="bg-black text-gray-300 antialiased selection:bg-green-500 selection:text-black">
+
+    <div id="idle-screen" class="fixed inset-0 z-10000 bg-black/95 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-700 backdrop-blur-sm">
+    <div class="relative">
+        <img src="{{ asset('images/walking.gif') }}" 
+     alt="Sleeping" 
+     class="w-64 h-auto opacity-80 drop-shadow-[0_0_30px_rgba(34,197,94,0.3)]">
+        
+    </div>
+    
+    <p class="mt-8 text-green-500/50 font-mono text-sm animate-pulse">
+        System Idle... Move cursor to wake up.
+    </p>
+</div>
 
     <div class="fixed w-full z-50 top-6 px-4 flex justify-center fade-element">
         <nav class="w-full max-w-3xl bg-gray-900/80 backdrop-blur-md border border-gray-700/50 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.5)] transition-all duration-300 hover:border-green-500/50">
@@ -528,6 +557,34 @@
             });
 
         });
+
+        // --- LOGIKA SCREENSAVER ---
+    let idleTime = 0;
+    const idleLimit = 20; // Waktu tunggu (detik) sebelum screensaver muncul
+    const overlay = document.getElementById('idle-screen');
+
+    // Hitung waktu setiap 1 detik
+    setInterval(() => {
+        idleTime++;
+        if (idleTime >= idleLimit) {
+            // Munculkan screensaver
+            overlay.classList.remove('opacity-0', 'pointer-events-none');
+        }
+    }, 1000);
+
+    // Fungsi Reset Timer
+    function resetTimer() {
+        idleTime = 0;
+        // Sembunyikan screensaver
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    // Daftar interaksi yang membatalkan screensaver
+    const events = ['mousemove', 'keypress', 'scroll', 'click', 'touchstart'];
+    
+    events.forEach(evt => {
+        document.addEventListener(evt, resetTimer);
+    });
     </script>
 </body>
 </html>
